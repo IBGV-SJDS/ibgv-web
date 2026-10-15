@@ -6,12 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Biblioteca | Iglesia Bíblica Gracia y Verdad</title>
-  <meta name="description" content="Catálogo privado de la Biblioteca de Iglesia Bíblica Gracia y Verdad, San Juan del Sur.">
+  <meta name="description" content="Biblioteca privada de la Iglesia Bíblica Gracia y Verdad, San Juan del Sur, Nicaragua.">
   <link rel="canonical" href="https://iglesiabiblicagraciayverdad.org/biblioteca.html">
   <link rel="stylesheet" href="styles.css?v=15">
 
   <style>
-    [hidden] { display: none !important; }
+    [hidden] {
+      display: none !important;
+    }
 
     .biblioteca-main {
       min-height: 75vh;
@@ -33,7 +35,7 @@
     }
 
     .biblioteca-hero h1 {
-      color: #fff;
+      color: white;
       font-size: clamp(27px, 4vw, 40px);
       margin: 0 0 12px;
     }
@@ -128,7 +130,7 @@
       padding: 10px 16px;
       border: 1px solid #cad5e1;
       border-radius: 9px;
-      background: #fff;
+      background: white;
       color: #07284a;
       cursor: pointer;
       font: inherit;
@@ -225,7 +227,7 @@
       color: #334155;
       font-size: 14px;
       line-height: 1.65;
-      margin: 0;
+      margin: 10px 0 0;
     }
 
     .libro-detalles {
@@ -266,23 +268,42 @@
     }
 
     @media (max-width: 650px) {
-      .biblioteca-main { padding: 22px 12px 55px; }
-      .biblioteca-panel { padding: 20px; }
-      .biblioteca-hero { padding: 28px 20px; }
-      .biblioteca-toolbar { grid-template-columns: 1fr; }
+      .biblioteca-main {
+        padding: 22px 12px 55px;
+      }
+
+      .biblioteca-panel {
+        padding: 20px;
+      }
+
+      .biblioteca-hero {
+        padding: 28px 20px;
+      }
+
+      .biblioteca-toolbar {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
 
+<!-- ENCABEZADO -->
+
 <header>
   <div class="nav">
     <img src="logo.jpg" alt="Logo IBGV">
+
     <strong>IGLESIA BÍBLICA GRACIA Y VERDAD</strong>
 
-    <button class="menu-toggle" type="button"
-      aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-label="Abrir menú"
+      aria-expanded="false">
+      ☰
+    </button>
 
     <nav class="links">
       <a href="index.html">Inicio</a>
@@ -302,8 +323,11 @@
 <main class="biblioteca-main">
   <div class="biblioteca-container">
 
+    <!-- PORTADA -->
+
     <section class="biblioteca-hero">
       <h1>📚 Biblioteca IBGV</h1>
+
       <p>
         Un espacio para crecer en el conocimiento de las
         Escrituras y la sana doctrina, mediante la lectura
@@ -311,57 +335,118 @@
       </p>
     </section>
 
-    <div id="mensaje-global" class="biblioteca-mensaje"
-      role="status" aria-live="polite" hidden></div>
+    <!-- MENSAJES -->
 
-    <section id="seccion-acceso" class="biblioteca-panel" hidden>
+    <div
+      id="mensaje-global"
+      class="biblioteca-mensaje"
+      role="status"
+      aria-live="polite"
+      hidden>
+    </div>
+
+    <!-- INICIO DE SESIÓN Y REGISTRO -->
+
+    <section
+      id="seccion-acceso"
+      class="biblioteca-panel"
+      hidden>
+
       <h2>Acceso a la biblioteca</h2>
+
       <p>
-        El catálogo está disponible exclusivamente para
-        miembros autorizados de nuestra biblioteca.
+        El catálogo está disponible exclusivamente
+        para miembros autorizados de nuestra biblioteca.
       </p>
 
       <div class="biblioteca-tabs">
-        <button id="tab-ingresar" class="activo" type="button">
+        <button
+          id="tab-ingresar"
+          class="activo"
+          type="button">
           Iniciar sesión
         </button>
-        <button id="tab-registrar" type="button">
+
+        <button
+          id="tab-registrar"
+          type="button">
           Solicitar acceso
         </button>
       </div>
 
       <form id="form-ingresar" class="biblioteca-form">
-        <label for="login-correo">Correo electrónico</label>
-        <input id="login-correo" type="email"
-          autocomplete="email" required>
 
-        <label for="login-clave">Contraseña</label>
-        <input id="login-clave" type="password"
-          autocomplete="current-password" required>
+        <label for="login-correo">
+          Correo electrónico
+        </label>
+
+        <input
+          id="login-correo"
+          type="email"
+          autocomplete="email"
+          required>
+
+        <label for="login-clave">
+          Contraseña
+        </label>
+
+        <input
+          id="login-clave"
+          type="password"
+          autocomplete="current-password"
+          required>
 
         <p>
           <button class="biblioteca-btn" type="submit">
             Iniciar sesión
           </button>
         </p>
-        <button class="biblioteca-btn secundario"
-          id="recuperar-clave" type="button">
+
+        <button
+          class="biblioteca-btn secundario"
+          id="recuperar-clave"
+          type="button">
           Olvidé mi contraseña
         </button>
+
       </form>
 
-      <form id="form-registrar" class="biblioteca-form" hidden>
-        <label for="registro-nombre">Nombre completo</label>
-        <input id="registro-nombre" type="text"
-          maxlength="120" autocomplete="name" required>
+      <form
+        id="form-registrar"
+        class="biblioteca-form"
+        hidden>
 
-        <label for="registro-correo">Correo electrónico</label>
-        <input id="registro-correo" type="email"
-          autocomplete="email" required>
+        <label for="registro-nombre">
+          Nombre completo
+        </label>
 
-        <label for="registro-clave">Contraseña</label>
-        <input id="registro-clave" type="password"
-          minlength="8" autocomplete="new-password" required>
+        <input
+          id="registro-nombre"
+          type="text"
+          maxlength="120"
+          autocomplete="name"
+          required>
+
+        <label for="registro-correo">
+          Correo electrónico
+        </label>
+
+        <input
+          id="registro-correo"
+          type="email"
+          autocomplete="email"
+          required>
+
+        <label for="registro-clave">
+          Contraseña
+        </label>
+
+        <input
+          id="registro-clave"
+          type="password"
+          minlength="8"
+          autocomplete="new-password"
+          required>
 
         <p class="biblioteca-ayuda">
           Después de registrarte, verificá tu correo.
@@ -369,86 +454,190 @@
           por la administración de la iglesia.
         </p>
 
-        <button class="biblioteca-btn" type="submit">
+        <button
+          class="biblioteca-btn"
+          type="submit">
           Enviar solicitud de acceso
         </button>
+
       </form>
     </section>
 
-    <section id="seccion-pendiente"
-      class="biblioteca-panel" hidden>
+    <!-- RECUPERACIÓN DE CONTRASEÑA -->
+
+    <section
+      id="seccion-recuperacion"
+      class="biblioteca-panel"
+      hidden>
+
+      <h2>Crear nueva contraseña</h2>
+
+      <p>
+        Escribí una nueva contraseña para tu cuenta
+        de la Biblioteca IBGV.
+      </p>
+
+      <form
+        id="form-nueva-clave"
+        class="biblioteca-form">
+
+        <label for="nueva-clave">
+          Nueva contraseña
+        </label>
+
+        <input
+          id="nueva-clave"
+          type="password"
+          minlength="8"
+          autocomplete="new-password"
+          required>
+
+        <label for="confirmar-clave">
+          Confirmar contraseña
+        </label>
+
+        <input
+          id="confirmar-clave"
+          type="password"
+          minlength="8"
+          autocomplete="new-password"
+          required>
+
+        <p>
+          <button
+            class="biblioteca-btn"
+            type="submit">
+            Guardar nueva contraseña
+          </button>
+        </p>
+
+      </form>
+
+    </section>
+
+    <!-- CUENTA PENDIENTE -->
+
+    <section
+      id="seccion-pendiente"
+      class="biblioteca-panel"
+      hidden>
+
       <h2>Solicitud de acceso</h2>
+
       <p id="texto-pendiente"></p>
 
-      <button id="actualizar-estado"
-        class="biblioteca-btn" type="button">
+      <button
+        id="actualizar-estado"
+        class="biblioteca-btn"
+        type="button">
         Comprobar aprobación
       </button>
 
-      <button class="biblioteca-btn secundario"
-        data-salir type="button">
+      <button
+        class="biblioteca-btn secundario"
+        data-salir
+        type="button">
         Cerrar sesión
       </button>
+
     </section>
 
+    <!-- CATÁLOGO -->
+
     <section id="seccion-catalogo" hidden>
+
       <div class="biblioteca-panel">
+
         <div class="biblioteca-usuario">
           <div>
             <h2>Catálogo de libros</h2>
             <p id="saludo-usuario"></p>
           </div>
-          <button class="biblioteca-btn secundario"
-            data-salir type="button">
+
+          <button
+            class="biblioteca-btn secundario"
+            data-salir
+            type="button">
             Cerrar sesión
           </button>
         </div>
 
         <div class="biblioteca-toolbar">
-          <input id="buscar-libros"
+
+          <input
+            id="buscar-libros"
             class="biblioteca-busqueda"
             type="search"
             placeholder="Buscar por título, autor o descripción..."
             aria-label="Buscar libros">
 
-          <select id="filtrar-libros"
+          <select
+            id="filtrar-libros"
             class="biblioteca-filtro"
             aria-label="Filtrar disponibilidad">
-            <option value="todos">Todos los libros</option>
-            <option value="disponibles">Disponibles</option>
-            <option value="prestados">Sin ejemplares disponibles</option>
+
+            <option value="todos">
+              Todos los libros
+            </option>
+
+            <option value="disponibles">
+              Disponibles
+            </option>
+
+            <option value="prestados">
+              Sin ejemplares disponibles
+            </option>
+
           </select>
         </div>
 
-        <p id="resumen-catalogo"
-          class="biblioteca-resumen"></p>
+        <p
+          id="resumen-catalogo"
+          class="biblioteca-resumen">
+        </p>
 
-        <div id="grid-libros" class="biblioteca-grid"></div>
+        <div
+          id="grid-libros"
+          class="biblioteca-grid">
+        </div>
+
       </div>
 
       <div class="biblioteca-panel">
+
         <h2>¿Deseás leer un libro?</h2>
+
         <p>
-          Consultá su disponibilidad y comunicate con la
-          administración de la iglesia para solicitarlo.
-          Los préstamos se gestionan personalmente.
+          Consultá su disponibilidad y comunicate
+          con la administración de la iglesia
+          para solicitarlo. Los préstamos se
+          gestionan personalmente.
         </p>
-        <a class="biblioteca-btn"
+
+        <a
+          class="biblioteca-btn"
           href="https://wa.me/50589855856?text=Hola%2C%20deseo%20consultar%20un%20libro%20de%20la%20Biblioteca%20IBGV"
-          target="_blank" rel="noopener noreferrer">
+          target="_blank"
+          rel="noopener noreferrer">
           Consultar por WhatsApp
         </a>
+
       </div>
+
     </section>
 
   </div>
 </main>
+
+<!-- PIE DE PÁGINA -->
 
 <footer>
   © <span id="year"></span>
   Iglesia Bíblica Gracia y Verdad ·
   <a href="index.html">Volver al inicio</a>
 </footer>
+
+<!-- SUPABASE -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -461,6 +650,9 @@
 
   const SUPABASE_KEY =
     "sb_publishable_Xi1YLNzysbd4rTc4jhsu4A_VUsfmrKm";
+
+  const REDIRECT_URL =
+    "https://iglesiabiblicagraciayverdad.org/biblioteca.html";
 
   const client = window.supabase.createClient(
     SUPABASE_URL,
@@ -479,15 +671,35 @@
   let libros = [];
   let usuarioActual = null;
   let cargandoEstado = false;
+  let recuperandoClave = false;
+  let procesandoCambioClave = false;
 
   const acceso = $("seccion-acceso");
   const pendiente = $("seccion-pendiente");
   const catalogo = $("seccion-catalogo");
+  const recuperacion = $("seccion-recuperacion");
 
   $("year").textContent = new Date().getFullYear();
 
+  // Detectar enlaces de recuperación antes de
+  // comprobar la sesión normal del usuario.
+
+  const parametrosURL =
+    new URLSearchParams(window.location.search);
+
+  const parametrosHash =
+    new URLSearchParams(window.location.hash.slice(1));
+
+  if (
+    parametrosURL.get("type") === "recovery" ||
+    parametrosHash.get("type") === "recovery"
+  ) {
+    recuperandoClave = true;
+  }
+
   function mostrarMensaje(texto, error = false) {
     const elemento = $("mensaje-global");
+
     elemento.textContent = texto;
     elemento.classList.toggle("error", error);
     elemento.hidden = !texto;
@@ -497,24 +709,32 @@
     acceso.hidden = nombre !== "acceso";
     pendiente.hidden = nombre !== "pendiente";
     catalogo.hidden = nombre !== "catalogo";
+    recuperacion.hidden = nombre !== "recuperacion";
   }
 
   function cambiarTab(registro) {
     $("form-ingresar").hidden = registro;
     $("form-registrar").hidden = !registro;
 
-    $("tab-ingresar").classList.toggle("activo", !registro);
-    $("tab-registrar").classList.toggle("activo", registro);
+    $("tab-ingresar").classList.toggle(
+      "activo", !registro
+    );
+
+    $("tab-registrar").classList.toggle(
+      "activo", registro
+    );
 
     mostrarMensaje("");
   }
 
   $("tab-ingresar").addEventListener(
-    "click", () => cambiarTab(false)
+    "click",
+    () => cambiarTab(false)
   );
 
   $("tab-registrar").addEventListener(
-    "click", () => cambiarTab(true)
+    "click",
+    () => cambiarTab(true)
   );
 
   function errorLegible(error) {
@@ -536,11 +756,18 @@
       return "La contraseña no cumple los requisitos de seguridad.";
     }
 
+    if (mensaje.includes("Auth session missing")) {
+      return "El enlace de recuperación no es válido o ha vencido. Solicitá otro.";
+    }
+
     return "No se pudo completar la operación. Intentá nuevamente.";
   }
 
   async function ejecutarFormulario(formulario, operacion) {
-    const boton = formulario.querySelector('[type="submit"]');
+    const boton = formulario.querySelector(
+      '[type="submit"]'
+    );
+
     boton.disabled = true;
 
     try {
@@ -553,125 +780,284 @@
     }
   }
 
-  $("form-registrar").addEventListener("submit", evento => {
-    evento.preventDefault();
+  // REGISTRO
 
-    ejecutarFormulario(evento.currentTarget, async () => {
-      const nombre = $("registro-nombre").value.trim();
-      const correo = $("registro-correo").value.trim();
-      const clave = $("registro-clave").value;
+  $("form-registrar").addEventListener(
+    "submit",
+    evento => {
+      evento.preventDefault();
 
-      if (nombre.length < 3) {
-        mostrarMensaje("Escribí tu nombre completo.", true);
+      ejecutarFormulario(
+        evento.currentTarget,
+        async () => {
+          const nombre =
+            $("registro-nombre").value.trim();
+
+          const correo =
+            $("registro-correo").value.trim();
+
+          const clave =
+            $("registro-clave").value;
+
+          if (nombre.length < 3) {
+            mostrarMensaje(
+              "Escribí tu nombre completo.",
+              true
+            );
+            return;
+          }
+
+          const { error } = await client.auth.signUp({
+            email: correo,
+            password: clave,
+            options: {
+              emailRedirectTo: REDIRECT_URL,
+              data: {
+                origen: "biblioteca_ibgv",
+                nombre: nombre
+              }
+            }
+          });
+
+          if (error) throw error;
+
+          $("form-registrar").reset();
+
+          mostrarMensaje(
+            "Solicitud enviada. Si el registro es válido, " +
+            "recibirás un correo de confirmación. " +
+            "Después deberás esperar la aprobación " +
+            "del administrador."
+          );
+        }
+      );
+    }
+  );
+
+  // INICIO DE SESIÓN
+
+  $("form-ingresar").addEventListener(
+    "submit",
+    evento => {
+      evento.preventDefault();
+
+      ejecutarFormulario(
+        evento.currentTarget,
+        async () => {
+          const correo =
+            $("login-correo").value.trim();
+
+          const clave =
+            $("login-clave").value;
+
+          const { error } =
+            await client.auth.signInWithPassword({
+              email: correo,
+              password: clave
+            });
+
+          if (error) throw error;
+
+          $("login-clave").value = "";
+          mostrarMensaje("");
+
+          await comprobarAcceso();
+        }
+      );
+    }
+  );
+
+  // ENVIAR CORREO DE RECUPERACIÓN
+
+  $("recuperar-clave").addEventListener(
+    "click",
+    async () => {
+      const correo =
+        $("login-correo").value.trim();
+
+      if (!correo) {
+        mostrarMensaje(
+          "Escribí primero tu correo electrónico.",
+          true
+        );
         return;
       }
 
-      const { error } = await client.auth.signUp({
-        email: correo,
-        password: clave,
-        options: {
-          emailRedirectTo:
-            "https://iglesiabiblicagraciayverdad.org/biblioteca.html",
-          data: {
-            origen: "biblioteca_ibgv",
-            nombre: nombre
-          }
-        }
-      });
+      const boton = $("recuperar-clave");
+      boton.disabled = true;
 
-      if (error) throw error;
+      try {
+        const { error } =
+          await client.auth.resetPasswordForEmail(
+            correo,
+            {
+              redirectTo: REDIRECT_URL
+            }
+          );
 
-      $("form-registrar").reset();
+        if (error) throw error;
 
-      mostrarMensaje(
-        "Solicitud enviada. Si el registro es válido, recibirás " +
-        "un correo de confirmación. Revisá también la carpeta " +
-        "de correo no deseado. Después deberás esperar la " +
-        "aprobación del administrador."
-      );
-    });
-  });
+        mostrarMensaje(
+          "Si existe una cuenta asociada a ese correo, " +
+          "recibirás un enlace para crear una nueva contraseña."
+        );
 
-  $("form-ingresar").addEventListener("submit", evento => {
-    evento.preventDefault();
-
-    ejecutarFormulario(evento.currentTarget, async () => {
-      const correo = $("login-correo").value.trim();
-      const clave = $("login-clave").value;
-
-      const { error } = await client.auth.signInWithPassword({
-        email: correo,
-        password: clave
-      });
-
-      if (error) throw error;
-
-      $("login-clave").value = "";
-      await comprobarAcceso();
-    });
-  });
-
-  $("recuperar-clave").addEventListener("click", async () => {
-    const correo = $("login-correo").value.trim();
-
-    if (!correo) {
-      mostrarMensaje(
-        "Escribí primero tu correo electrónico en el formulario.",
-        true
-      );
-      return;
+      } catch (error) {
+        console.error(error);
+        mostrarMensaje(
+          errorLegible(error),
+          true
+        );
+      } finally {
+        boton.disabled = false;
+      }
     }
+  );
 
-    try {
-      const { error } = await client.auth.resetPasswordForEmail(
-        correo,
-        {
-          redirectTo:
-            "https://iglesiabiblicagraciayverdad.org/biblioteca.html"
+  // CAMBIAR CONTRASEÑA
+
+  $("form-nueva-clave").addEventListener(
+    "submit",
+    async evento => {
+      evento.preventDefault();
+
+      if (procesandoCambioClave) return;
+
+      const clave = $("nueva-clave").value;
+      const confirmacion =
+        $("confirmar-clave").value;
+
+      if (clave !== confirmacion) {
+        mostrarMensaje(
+          "Las contraseñas no coinciden.",
+          true
+        );
+        return;
+      }
+
+      if (clave.length < 8) {
+        mostrarMensaje(
+          "La contraseña debe tener al menos 8 caracteres.",
+          true
+        );
+        return;
+      }
+
+      const boton = evento.currentTarget.querySelector(
+        '[type="submit"]'
+      );
+
+      boton.disabled = true;
+      procesandoCambioClave = true;
+
+      try {
+        const { data, error: errorSesion } =
+          await client.auth.getSession();
+
+        if (errorSesion || !data?.session) {
+          throw new Error("Auth session missing");
         }
-      );
 
-      if (error) throw error;
+        const { error } =
+          await client.auth.updateUser({
+            password: clave
+          });
 
-      mostrarMensaje(
-        "Si existe una cuenta asociada a ese correo, " +
-        "recibirás instrucciones para recuperar tu contraseña."
-      );
-    } catch (error) {
-      console.error(error);
-      mostrarMensaje(errorLegible(error), true);
+        if (error) throw error;
+
+        $("form-nueva-clave").reset();
+
+        recuperandoClave = false;
+
+        // El enlace de recuperación no debe
+        // permanecer en la barra de direcciones.
+
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+
+        const { error: errorSalida } =
+          await client.auth.signOut();
+
+        if (errorSalida) {
+          console.error(errorSalida);
+        }
+
+        usuarioActual = null;
+        libros = [];
+
+        cambiarTab(false);
+        mostrarSeccion("acceso");
+
+        mostrarMensaje(
+          "¡Contraseña actualizada correctamente! " +
+          "Ahora podés iniciar sesión con tu nueva contraseña."
+        );
+
+      } catch (error) {
+        console.error(error);
+        mostrarMensaje(
+          errorLegible(error),
+          true
+        );
+      } finally {
+        procesandoCambioClave = false;
+        boton.disabled = false;
+      }
     }
-  });
+  );
+
+  // CERRAR SESIÓN
 
   async function cerrarSesion() {
     const { error } = await client.auth.signOut();
 
     if (error) {
-      mostrarMensaje("No se pudo cerrar la sesión.", true);
+      mostrarMensaje(
+        "No se pudo cerrar la sesión.",
+        true
+      );
       return;
     }
 
     usuarioActual = null;
     libros = [];
+    recuperandoClave = false;
+
     mostrarSeccion("acceso");
     cambiarTab(false);
   }
 
-  document.querySelectorAll("[data-salir]").forEach(boton => {
-    boton.addEventListener("click", cerrarSesion);
-  });
+  document.querySelectorAll("[data-salir]")
+    .forEach(boton => {
+      boton.addEventListener(
+        "click",
+        cerrarSesion
+      );
+    });
+
+  // CREACIÓN SEGURA DE ELEMENTOS
 
   function elementoTexto(etiqueta, clase, contenido) {
     const nodo = document.createElement(etiqueta);
-    if (clase) nodo.className = clase;
+
+    if (clase) {
+      nodo.className = clase;
+    }
+
     nodo.textContent = contenido ?? "";
+
     return nodo;
   }
 
   function fechaLocal(valor) {
     if (!valor) return "Fecha no disponible";
 
-    const fecha = new Date(valor + "T12:00:00");
+    const fecha = new Date(
+      valor + "T12:00:00"
+    );
 
     if (Number.isNaN(fecha.getTime())) {
       return "Fecha no disponible";
@@ -684,16 +1070,28 @@
     });
   }
 
+  // TARJETAS DE LIBROS
+
   function crearTarjeta(libro) {
-    const tarjeta = document.createElement("article");
+    const tarjeta =
+      document.createElement("article");
+
     tarjeta.className = "libro-card";
 
     tarjeta.appendChild(
-      elementoTexto("div", "libro-icono", "📖")
+      elementoTexto(
+        "div",
+        "libro-icono",
+        "📖"
+      )
     );
 
     tarjeta.appendChild(
-      elementoTexto("h3", "", libro.titulo || "Sin título")
+      elementoTexto(
+        "h3",
+        "",
+        libro.titulo || "Sin título"
+      )
     );
 
     tarjeta.appendChild(
@@ -704,69 +1102,98 @@
       )
     );
 
-    const disponibles = Number(libro.cantidad_disponible || 0);
-    const prestados = Number(libro.cantidad_prestada || 0);
-    const total = Number(libro.cantidad_total || 0);
+    const disponibles =
+      Number(libro.cantidad_disponible || 0);
+
+    const prestados =
+      Number(libro.cantidad_prestada || 0);
+
+    const total =
+      Number(libro.cantidad_total || 0);
 
     const estado = elementoTexto(
       "span",
-      "libro-estado" + (disponibles <= 0 ? " prestado" : ""),
+      "libro-estado" +
+      (disponibles <= 0 ? " prestado" : ""),
       disponibles > 0 ? "Disponible" : "Prestado"
     );
 
     tarjeta.appendChild(estado);
 
     if (libro.descripcion) {
-      const detalles = document.createElement("details");
-      const resumen = elementoTexto(
-        "summary", "", "Leer descripción"
-      );
-      const descripcion = elementoTexto(
-        "p", "libro-descripcion", libro.descripcion
+      const detalles =
+        document.createElement("details");
+
+      detalles.appendChild(
+        elementoTexto(
+          "summary",
+          "",
+          "Leer descripción"
+        )
       );
 
-      detalles.append(resumen, descripcion);
+      detalles.appendChild(
+        elementoTexto(
+          "p",
+          "libro-descripcion",
+          libro.descripcion
+        )
+      );
+
       tarjeta.appendChild(detalles);
     }
 
-    const info = document.createElement("div");
+    const info =
+      document.createElement("div");
+
     info.className = "libro-detalles";
 
     info.appendChild(
       elementoTexto(
-        "p", "",
+        "p",
+        "",
         `Ejemplares: ${total} · Disponibles: ${disponibles}`
       )
     );
 
-    if (prestados > 0 && Array.isArray(libro.lectores)) {
+    if (
+      prestados > 0 &&
+      Array.isArray(libro.lectores)
+    ) {
       info.appendChild(
         elementoTexto(
-          "strong", "", "Actualmente lo están leyendo:"
+          "strong",
+          "",
+          "Actualmente lo están leyendo:"
         )
       );
 
       libro.lectores.forEach(lector => {
-        const bloque = document.createElement("div");
+        const bloque =
+          document.createElement("div");
+
         bloque.className = "libro-lector";
 
         bloque.appendChild(
           elementoTexto(
-            "strong", "",
+            "strong",
+            "",
             lector.nombre || "Nombre no registrado"
           )
         );
 
         bloque.appendChild(
           elementoTexto(
-            "div", "",
+            "div",
+            "",
             "Desde: " + fechaLocal(lector.desde)
           )
         );
 
         bloque.appendChild(
           elementoTexto(
-            "div", "",
+            "div",
+            "",
             "Tiempo transcurrido: " +
             Number(lector.dias || 0) + " días"
           )
@@ -777,14 +1204,20 @@
     }
 
     tarjeta.appendChild(info);
+
     return tarjeta;
   }
 
-  function mostrarLibros() {
-    const busqueda = $("buscar-libros")
-      .value.trim().toLocaleLowerCase("es");
+  // BÚSQUEDA Y FILTROS
 
-    const filtro = $("filtrar-libros").value;
+  function mostrarLibros() {
+    const busqueda =
+      $("buscar-libros").value
+        .trim()
+        .toLocaleLowerCase("es");
+
+    const filtro =
+      $("filtrar-libros").value;
 
     const resultados = libros.filter(libro => {
       const texto = [
@@ -792,13 +1225,17 @@
         libro.autor,
         libro.descripcion,
         libro.categoria
-      ].filter(Boolean).join(" ").toLocaleLowerCase("es");
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLocaleLowerCase("es");
 
-      if (!texto.includes(busqueda)) return false;
+      if (!texto.includes(busqueda)) {
+        return false;
+      }
 
-      const disponibles = Number(
-        libro.cantidad_disponible || 0
-      );
+      const disponibles =
+        Number(libro.cantidad_disponible || 0);
 
       if (filtro === "disponibles") {
         return disponibles > 0;
@@ -829,34 +1266,54 @@
     }
 
     resultados.forEach(libro => {
-      contenedor.appendChild(crearTarjeta(libro));
+      contenedor.appendChild(
+        crearTarjeta(libro)
+      );
     });
   }
 
-  $("buscar-libros").addEventListener("input", mostrarLibros);
-  $("filtrar-libros").addEventListener("change", mostrarLibros);
+  $("buscar-libros").addEventListener(
+    "input",
+    mostrarLibros
+  );
+
+  $("filtrar-libros").addEventListener(
+    "change",
+    mostrarLibros
+  );
+
+  // OBTENER CATÁLOGO DE SUPABASE
 
   async function cargarCatalogo() {
-    const { data, error } = await client.rpc(
-      "biblioteca_catalogo"
-    );
+    const { data, error } =
+      await client.rpc("biblioteca_catalogo");
 
     if (error) throw error;
 
     libros = Array.isArray(data) ? data : [];
+
     libros.sort((a, b) =>
-      (a.titulo || "").localeCompare(b.titulo || "", "es")
+      (a.titulo || "").localeCompare(
+        b.titulo || "",
+        "es"
+      )
     );
 
     mostrarLibros();
   }
 
+  // COMPROBAR AUTORIZACIÓN
+
   async function comprobarAcceso() {
-    if (cargandoEstado) return;
+    if (recuperandoClave || cargandoEstado) {
+      return;
+    }
+
     cargandoEstado = true;
 
     try {
-      const { data, error } = await client.auth.getUser();
+      const { data, error } =
+        await client.auth.getUser();
 
       if (error || !data?.user) {
         usuarioActual = null;
@@ -866,13 +1323,18 @@
 
       usuarioActual = data.user;
 
-      const { data: perfil, error: errorPerfil } = await client
+      const {
+        data: perfil,
+        error: errorPerfil
+      } = await client
         .from("biblioteca_perfiles")
         .select("nombre, rol, autorizado")
         .eq("id", usuarioActual.id)
         .maybeSingle();
 
-      if (errorPerfil) throw errorPerfil;
+      if (errorPerfil) {
+        throw errorPerfil;
+      }
 
       if (!perfil?.autorizado) {
         $("texto-pendiente").textContent =
@@ -885,59 +1347,161 @@
       }
 
       $("saludo-usuario").textContent =
-        "Bienvenido: " + perfil.nombre +
-        (perfil.rol === "admin" ? " · Administrador" : "");
+        "Bienvenido: " +
+        perfil.nombre +
+        (
+          perfil.rol === "admin"
+            ? " · Administrador"
+            : ""
+        );
 
-      mostrarSeccion("catalogo");
       await cargarCatalogo();
+
+      if (!recuperandoClave) {
+        mostrarSeccion("catalogo");
+      }
 
     } catch (error) {
       console.error(error);
+
       mostrarMensaje(
-        "No se pudo comprobar el acceso. Intentá nuevamente.",
+        "No se pudo comprobar el acceso. " +
+        "Intentá nuevamente.",
         true
       );
+
       mostrarSeccion("pendiente");
+
+      $("texto-pendiente").textContent =
+        "No fue posible cargar tu cuenta. " +
+        "Comprobá tu conexión e intentá nuevamente.";
+
     } finally {
       cargandoEstado = false;
     }
   }
 
   $("actualizar-estado").addEventListener(
-    "click", comprobarAcceso
+    "click",
+    comprobarAcceso
   );
 
-  const menuButton = document.querySelector(".menu-toggle");
-  const menuLinks = document.querySelector(".links");
+  // MENÚ MÓVIL
+
+  const menuButton =
+    document.querySelector(".menu-toggle");
+
+  const menuLinks =
+    document.querySelector(".links");
 
   if (menuButton && menuLinks) {
-    menuButton.addEventListener("click", () => {
-      const abierto = menuLinks.classList.toggle("open");
-      menuButton.setAttribute("aria-expanded", String(abierto));
-      menuButton.textContent = abierto ? "✕" : "☰";
-    });
+    menuButton.addEventListener(
+      "click",
+      () => {
+        const abierto =
+          menuLinks.classList.toggle("open");
 
-    menuLinks.querySelectorAll("a").forEach(enlace => {
-      enlace.addEventListener("click", () => {
-        menuLinks.classList.remove("open");
-        menuButton.setAttribute("aria-expanded", "false");
-        menuButton.textContent = "☰";
+        menuButton.setAttribute(
+          "aria-expanded",
+          String(abierto)
+        );
+
+        menuButton.textContent =
+          abierto ? "✕" : "☰";
+      }
+    );
+
+    menuLinks.querySelectorAll("a")
+      .forEach(enlace => {
+        enlace.addEventListener(
+          "click",
+          () => {
+            menuLinks.classList.remove("open");
+
+            menuButton.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+            menuButton.textContent = "☰";
+          }
+        );
       });
-    });
   }
 
-  client.auth.onAuthStateChange((_evento, sesion) => {
-    if (!sesion) {
-      usuarioActual = null;
-      libros = [];
+  // EVENTOS DE AUTENTICACIÓN
+
+  client.auth.onAuthStateChange(
+    (evento, sesion) => {
+
+      if (evento === "PASSWORD_RECOVERY") {
+        recuperandoClave = true;
+        mostrarSeccion("recuperacion");
+        mostrarMensaje("");
+        return;
+      }
+
+      if (
+        evento === "SIGNED_OUT" &&
+        !recuperandoClave
+      ) {
+        usuarioActual = null;
+        libros = [];
+        mostrarSeccion("acceso");
+      }
+    }
+  );
+
+  // INICIAR BIBLIOTECA
+
+  async function iniciarBiblioteca() {
+    if (recuperandoClave) {
+      mostrarSeccion("recuperacion");
+    } else {
       mostrarSeccion("acceso");
     }
-  });
 
-  comprobarAcceso();
+    try {
+      const { data, error } =
+        await client.auth.getSession();
+
+      if (error) throw error;
+
+      if (recuperandoClave) {
+        if (!data?.session) {
+          mostrarSeccion("acceso");
+
+          mostrarMensaje(
+            "El enlace de recuperación no es válido " +
+            "o ha vencido. Solicitá uno nuevo.",
+            true
+          );
+        } else {
+          mostrarSeccion("recuperacion");
+        }
+
+        return;
+      }
+
+      await comprobarAcceso();
+
+    } catch (error) {
+      console.error(error);
+
+      mostrarSeccion("acceso");
+
+      mostrarMensaje(
+        "No se pudo iniciar la biblioteca. " +
+        "Actualizá la página e intentá nuevamente.",
+        true
+      );
+    }
+  }
+
+  iniciarBiblioteca();
+
 })();
 </script>
 
 </body>
 </html>
-
