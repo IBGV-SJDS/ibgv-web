@@ -14,7 +14,7 @@
 <section class="lib-hero"><h1>Administración de Biblioteca IBGV</h1><p>Miembros, libros, préstamos y devoluciones.</p></section>
 <div id="message" class="lib-message" role="status" aria-live="polite" hidden></div>
 <section id="loading" class="lib-panel"><p>Comprobando acceso administrativo...</p></section>
-<section id="denied" class="lib-panel" hidden><h2>Acceso restringido</h2><p id="denied-text">Este espacio está reservado para la administración de la biblioteca.</p><a class="lib-btn secondary" href="biblioteca.html">Volver a biblioteca</a></section>
+<section id="denied" class="lib-panel" hidden><h2>Acceso restringido</h2><p id="denied-text">Este espacio está reservado para la administración de la biblioteca.</p><button id="retry-access" class="lib-btn" type="button">Volver a comprobar acceso</button> <a class="lib-btn secondary" href="biblioteca.html">Volver a biblioteca</a></section>
 <section id="app" hidden>
 <div class="lib-panel lib-top"><div><strong id="admin-name"></strong><div class="lib-small">Sesión administrativa autorizada</div></div><button id="logout" class="lib-btn secondary" type="button">Cerrar sesión</button></div>
 <div class="lib-tabs" role="tablist" aria-label="Secciones administrativas"><button type="button" data-tab="solicitudes" aria-selected="true">Solicitudes</button><button type="button" data-tab="libros" aria-selected="false">Libros</button><button type="button" data-tab="prestamos" aria-selected="false">Préstamos y devoluciones</button></div>
@@ -59,7 +59,54 @@ function errorText(e){console.error(e);return e?.message||'Ocurrió un error ine
 async function guard(button,work){button.disabled=true;message('');try{await work();}catch(e){message(errorText(e),'error');}finally{button.disabled=false;}}
 function selectTab(name){for(const b of document.querySelectorAll('[data-tab]'))b.setAttribute('aria-selected',String(b.dataset.tab===name));for(const n of ['solicitudes','libros','prestamos'])$('tab-'+n).hidden=n!==name;message('');}
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
-async function verify(){try{const {data:{user},error}=await db.auth.getUser();if(error||!user){$('denied-text').textContent='Iniciá sesión primero en la biblioteca.';return;}const {data:p,error:pe}=await db.from('biblioteca_perfiles').select('nombre,rol,autorizado').eq('id',user.id).maybeSingle();if(pe)throw pe;if(!p||p.rol!=='admin'||p.autorizado!==true){$('denied-text').textContent='Tu cuenta no tiene permisos administrativos para la biblioteca.';return;}authorized=true;$('admin-name').textContent=p.nombre;$('denied').hidden=true;$('app').hidden=false;await Promise.all([loadRequests(),loadBooks(),loadLoans()]);}catch(e){message('No se pudo verificar o cargar el panel: '+errorText(e),'error');}finally{$('loading').hidden=true;if(!authorized)$('denied').hidden=false;}}
+let verificando=false;
+async function verify(){
+ if(verificando)return;
+ verificando=true;
+ $('loading').hidden=false;
+ $('denied').hidden=true;
+ message('');
+ try{
+   // Esperar a que Supabase restaure la sesión persistida antes de comprobar permisos.
+   const {data:sessionData,error:sessionError}=await db.auth.getSession();
+   if(sessionError)throw sessionError;
+   let session=sessionData?.session;
+   if(!session){
+     // Segunda comprobación breve ante una restauración tardía de sesión.
+     await new Promise(resolve=>setTimeout(resolve,700));
+     const retry=await db.auth.getSession();
+     if(retry.error)throw retry.error;
+     session=retry.data?.session;
+   }
+   if(!session){
+     $('denied-text').textContent='No se encontró una sesión en esta página. Iniciá sesión en la biblioteca y volvé a intentarlo.';
+     return;
+   }
+   const {data:userData,error:userError}=await db.auth.getUser();
+   if(userError||!userData?.user){
+     $('denied-text').textContent='No se pudo validar la sesión. Volvé a la biblioteca y comprobá que sigás conectado.';
+     return;
+   }
+   const {data:p,error:pe}=await db.from('biblioteca_perfiles').select('nombre,rol,autorizado').eq('id',userData.user.id).maybeSingle();
+   if(pe)throw pe;
+   if(!p||p.rol!=='admin'||p.autorizado!==true){
+     $('denied-text').textContent='Tu cuenta no tiene permisos administrativos para la biblioteca.';
+     return;
+   }
+   authorized=true;
+   $('admin-name').textContent=p.nombre;
+   $('app').hidden=false;
+   await Promise.all([loadRequests(),loadBooks(),loadLoans()]);
+ }catch(e){
+   message('No se pudo verificar o cargar el panel: '+errorText(e),'error');
+   $('denied-text').textContent='Ocurrió un problema al comprobar el acceso. Podés intentar nuevamente.';
+ }finally{
+   $('loading').hidden=true;
+   $('denied').hidden=authorized;
+   verificando=false;
+ }
+}
+$('retry-access').addEventListener('click',verify);
 async function loadRequests(){const {data,error}=await db.from('biblioteca_solicitudes').select('id,nombre,correo,estado,solicitado_en').eq('estado','pendiente').order('solicitado_en',{ascending:true});if(error)throw error;const root=$('requests');root.replaceChildren();if(!data.length){root.append(node('p','No hay solicitudes pendientes.','lib-small'));return;}for(const req of data){const card=node('div','','lib-list-item');const details=node('div');details.append(node('strong',req.nombre),node('p',req.correo||'Sin correo'),node('p','Solicitado: '+fmt((req.solicitado_en||'').slice(0,10)),'lib-small'));const actions=node('div','','lib-actions');for(const [label,approve,cls] of [['Aprobar',true,'lib-btn'],['Rechazar',false,'lib-btn danger']]){const btn=node('button',label,cls);btn.type='button';btn.addEventListener('click',()=>{if(!confirm((approve?'¿Aprobar a ':'¿Rechazar a ')+req.nombre+'?'))return;guard(btn,async()=>{const {error}=await db.rpc('biblioteca_resolver_solicitud',{p_solicitud_id:req.id,p_aprobar:approve});if(error)throw error;await loadRequests();message(approve?'Solicitud aprobada.':'Solicitud rechazada.','success');});});actions.append(btn);}card.append(details,actions);root.append(card);}}
 async function loadBooks(){const {data,error}=await db.from('biblioteca_libros').select('id,titulo,autor,editorial,categoria,descripcion,isbn,portada_url,cantidad_total,visible').order('titulo');if(error)throw error;allBooks=data||[];renderBooks();renderLoanOptions();}
 function renderBooks(){const q=$('book-search').value.toLocaleLowerCase('es').trim();const filtered=allBooks.filter(b=>([b.titulo,b.autor].filter(Boolean).join(' ')).toLocaleLowerCase('es').includes(q));$('books-count').textContent=`${filtered.length} de ${allBooks.length} títulos`;$('books').replaceChildren();for(const book of filtered){const row=node('div','','lib-list-item');const left=node('div');left.append(node('strong',book.titulo),node('p',book.autor||'Autor no indicado','lib-small'),node('p',`Ejemplares: ${book.cantidad_total} · ${book.visible?'Visible':'Oculto'}`,'lib-small'));const actions=node('div','','lib-actions');const edit=node('button','Editar','lib-btn secondary');edit.type='button';edit.addEventListener('click',()=>editBook(book));actions.append(edit);row.append(left,actions);$('books').append(row);}if(!filtered.length)$('books').append(node('p','No se encontraron libros.','lib-small'));}
