@@ -194,6 +194,16 @@
       font-size: 27px;
     }
 
+    .libro-portada {
+      width: 100%;
+      height: 235px;
+      object-fit: contain;
+      background: #f8fafc;
+      border: 1px solid #e0e6ed;
+      border-radius: 9px;
+      display: block;
+    }
+
     .libro-card h3 {
       color: #07284a;
       font-size: 19px;
@@ -1156,13 +1166,33 @@
 
     tarjeta.className = "libro-card";
 
-    tarjeta.appendChild(
-      elementoTexto(
-        "div",
-        "libro-icono",
-        "📖"
-      )
-    );
+    // Mostrar la portada almacenada en Supabase.
+    // Si falta o falla la imagen, conservar el icono de libro.
+    const icono = elementoTexto("div", "libro-icono", "📖");
+    const portada = String(libro.portada_url || "").trim();
+    if (portada) {
+      let urlValida = false;
+      try {
+        const url = new URL(portada);
+        urlValida = url.protocol === "https:" || url.protocol === "http:";
+      } catch (_) {
+        urlValida = false;
+      }
+      if (urlValida) {
+        const imagen = document.createElement("img");
+        imagen.className = "libro-portada";
+        imagen.alt = "Portada de " + (libro.titulo || "libro");
+        imagen.loading = "lazy";
+        imagen.referrerPolicy = "no-referrer";
+        imagen.onerror = () => imagen.replaceWith(icono);
+        imagen.src = portada;
+        tarjeta.appendChild(imagen);
+      } else {
+        tarjeta.appendChild(icono);
+      }
+    } else {
+      tarjeta.appendChild(icono);
+    }
 
     tarjeta.appendChild(
       elementoTexto(
