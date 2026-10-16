@@ -635,6 +635,7 @@
   © <span id="year"></span>
   Iglesia Bíblica Gracia y Verdad ·
   <a href="index.html">Volver al inicio</a>
+  <span id="enlace-admin-biblioteca" hidden> · <a href="biblioteca-admin.html">Administración</a></span>
 </footer>
 
 <!-- SUPABASE -->
@@ -1024,6 +1025,7 @@
 
     usuarioActual = null;
     libros = [];
+    $("enlace-admin-biblioteca").hidden = true;
     recuperandoClave = false;
 
     mostrarSeccion("acceso");
@@ -1317,6 +1319,7 @@
 
       if (error || !data?.user) {
         usuarioActual = null;
+        $("enlace-admin-biblioteca").hidden = true;
         mostrarSeccion("acceso");
         return;
       }
@@ -1335,6 +1338,8 @@
       if (errorPerfil) {
         throw errorPerfil;
       }
+
+      $("enlace-admin-biblioteca").hidden = !(perfil?.autorizado && perfil?.rol === "admin");
 
       if (!perfil?.autorizado) {
         $("texto-pendiente").textContent =
@@ -1447,6 +1452,7 @@
       ) {
         usuarioActual = null;
         libros = [];
+        $("enlace-admin-biblioteca").hidden = true;
         mostrarSeccion("acceso");
       }
     }
