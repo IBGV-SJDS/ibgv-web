@@ -608,10 +608,9 @@
         <h2>¿Deseás leer un libro?</h2>
 
         <p>
-          Consultá su disponibilidad y comunicate
-          con la administración de la iglesia
-          para solicitarlo. Los préstamos se
-          gestionan personalmente.
+          Elegí un libro disponible y presioná «Solicitar libro».
+          La administración coordinará personalmente su entrega.
+          Si preferís hacer una consulta, también podés escribirnos por WhatsApp.
         </p>
 
         <a
@@ -670,6 +669,8 @@
   const $ = id => document.getElementById(id);
 
   let libros = [];
+  let solicitudEnProceso = false;
+  let solicitudActiva = false;
   let usuarioActual = null;
   let cargandoEstado = false;
   let recuperandoClave = false;
@@ -1025,6 +1026,7 @@
 
     usuarioActual = null;
     libros = [];
+    solicitudActiva = false;
     $("enlace-admin-biblioteca").hidden = true;
     recuperandoClave = false;
 
@@ -1070,6 +1072,80 @@
       month: "long",
       year: "numeric"
     });
+  }
+
+  // CONSULTAR SI YA EXISTE UNA SOLICITUD PENDIENTE.
+  // Los préstamos activos también se validan en la función SQL.
+  async function cargarEstadoSolicitudes() {
+    solicitudActiva = false;
+    if (!usuarioActual) return;
+
+    const { data, error } = await client
+      .from("biblioteca_solicitudes_libros")
+      .select("id")
+      .eq("usuario_id", usuarioActual.id)
+      .in("estado", ["pendiente", "aprobada"])
+      .limit(1);
+
+    if (error) throw error;
+    solicitudActiva = Array.isArray(data) && data.length > 0;
+  }
+
+  async function solicitarLibro(libro, boton) {
+    if (solicitudEnProceso || solicitudActiva) return;
+    if (!usuarioActual) {
+      mostrarMensaje("Iniciá sesión para solicitar un libro.", true);
+      return;
+    }
+
+    if (!window.confirm(`¿Querés solicitar el libro «${libro.titulo}»?`)) {
+      return;
+    }
+
+    solicitudEnProceso = true;
+    boton.disabled = true;
+    boton.textContent = "Enviando solicitud...";
+    mostrarMensaje("");
+
+    try {
+      const { error } = await client.rpc("biblioteca_solicitar_libro", {
+        p_libro_id: libro.id
+      });
+      if (error) throw error;
+
+      solicitudActiva = true;
+      mostrarMensaje(
+        `¡Solicitud enviada correctamente! Solicitaste «${libro.titulo}». ` +
+        "La administración de la iglesia coordinará la entrega. " +
+        "Podrás solicitar otro libro cuando devolvás este."
+      );
+      await cargarCatalogo();
+    } catch (error) {
+      console.error("Error al solicitar libro:", error);
+      const mensaje = String(error?.message || "");
+      const conocidos = [
+        "Ya tienes una solicitud activa.",
+        "Debes devolver tu libro antes de solicitar otro.",
+        "Todos los ejemplares están prestados o reservados.",
+        "Este libro no está disponible.",
+        "Tu cuenta no está autorizada."
+      ];
+      mostrarMensaje(
+        conocidos.find(texto => mensaje.includes(texto)) ||
+        "No fue posible registrar la solicitud. Intentá nuevamente.",
+        true
+      );
+      try {
+        await cargarEstadoSolicitudes();
+        await cargarCatalogo();
+      } catch (actualizacionError) {
+        console.error(actualizacionError);
+      }
+    } finally {
+      solicitudEnProceso = false;
+      boton.disabled = false;
+      boton.textContent = "Solicitar libro";
+    }
   }
 
   // TARJETAS DE LIBROS
@@ -1206,6 +1282,26 @@
     }
 
     tarjeta.appendChild(info);
+
+    const botonSolicitud = document.createElement("button");
+    botonSolicitud.type = "button";
+    botonSolicitud.className = "biblioteca-btn";
+    botonSolicitud.style.marginTop = "12px";
+    botonSolicitud.style.width = "100%";
+
+    if (solicitudActiva) {
+      botonSolicitud.textContent = "Ya tenés una solicitud activa";
+      botonSolicitud.disabled = true;
+    } else if (disponibles <= 0) {
+      botonSolicitud.textContent = "No disponible para solicitar";
+      botonSolicitud.disabled = true;
+    } else {
+      botonSolicitud.textContent = "Solicitar libro";
+      botonSolicitud.addEventListener("click", () =>
+        solicitarLibro(libro, botonSolicitud)
+      );
+    }
+    tarjeta.appendChild(botonSolicitud);
 
     return tarjeta;
   }
@@ -1360,6 +1456,7 @@
             : ""
         );
 
+      await cargarEstadoSolicitudes();
       await cargarCatalogo();
 
       if (!recuperandoClave) {
