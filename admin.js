@@ -36,70 +36,102 @@ const normalizeUrl = (v = '') => {
 
 /* =========================
    INICIO Y AUTENTICACIÓN
+   Acceso exclusivo del administrador IBGV
 ========================= */
 
-if (!ok) {
+let authCheckSequence = 0;
 
+if (!ok) {
   setup.style.display = 'block';
   loginBtn.disabled = true;
-
 } else {
-
   db = supabase.createClient(
     c.SUPABASE_URL,
     c.SUPABASE_ANON_KEY
   );
-
   init();
 }
 
-
 async function init() {
+  login.hidden = false;
+  dashboard.hidden = true;
 
-  const {
-    data: { session }
-  } = await db.auth.getSession();
+  db.auth.onAuthStateChange((_event, session) => {
+    void render(session);
+  });
 
-  render(session);
+  const { data: { session }, error } =
+    await db.auth.getSession();
 
-  db.auth.onAuthStateChange((_e, s) => render(s));
-}
-
-
-function render(s) {
-
-  login.hidden = !!s;
-  dashboard.hidden = !s;
-
-  if (s) {
-    loadSettings();
-    loadSermons();
-    loadLeaders();
-    loadAlbums();
+  if (error) {
+    msg.textContent =
+      'No se pudo comprobar la sesión.';
+    return;
   }
+
+  void render(session);
 }
 
+async function render(session) {
+  const sequence = ++authCheckSequence;
+  dashboard.hidden = true;
+
+  if (!session) {
+    login.hidden = false;
+    return;
+  }
+
+  login.hidden = true;
+
+  const { data: esAdmin, error } =
+    await db.rpc('biblioteca_es_admin');
+
+  if (sequence !== authCheckSequence) return;
+
+  if (error || esAdmin !== true) {
+    dashboard.hidden = true;
+
+    await db.auth.signOut();
+
+    login.hidden = false;
+
+    msg.textContent = error
+      ? 'No se pudo verificar el permiso de administrador.'
+      : 'Acceso denegado: esta cuenta no es administradora.';
+
+    return;
+  }
+
+  msg.textContent = '';
+  login.hidden = true;
+  dashboard.hidden = false;
+
+  loadSettings();
+  loadSermons();
+  loadLeaders();
+  loadAlbums();
+}
 
 loginBtn.onclick = async () => {
+  msg.textContent = '';
+  loginBtn.disabled = true;
 
-  let { error } =
-    await db.auth.signInWithPassword({
-      email: email.value,
-      password: password.value
-    });
+  try {
+    const { error } =
+      await db.auth.signInWithPassword({
+        email: email.value,
+        password: password.value
+      });
 
-  msg.textContent =
-    error ? error.message : '';
+    if (error) {
+      msg.textContent = error.message;
+    }
+  } finally {
+    loginBtn.disabled = false;
+  }
 };
 
-
-logout.onclick = () =>
-  db.auth.signOut();
-
-
-/* =========================
-   CONFIGURACIÓN
-========================= */
+logout.onclick = () => db.auth.signOut();
 
 const settingKeys = [
   'about',
